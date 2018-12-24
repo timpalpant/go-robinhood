@@ -21,12 +21,12 @@ type HTTPClient interface {
 }
 
 type Client struct {
-	httpClient HTTPClient
+	HTTPClient
 }
 
 func NewClient(tokenSource oauth2.TokenSource) *Client {
 	return &Client{
-		httpClient: oauth2.NewClient(context.Background(), tokenSource),
+		HTTPClient: oauth2.NewClient(context.Background(), tokenSource),
 	}
 }
 
@@ -41,7 +41,7 @@ func (c *Client) getJSON(url string, result interface{}) error {
 
 func (c *Client) do(req *http.Request, result interface{}) error {
 	glog.V(2).Infof("%v: %v", req.Method, req.URL)
-	resp, err := c.httpClient.Do(req)
+	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return err
 	}

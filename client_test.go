@@ -12,7 +12,7 @@ import (
 func NewTestClient(responses []*http.Response) *Client {
 	httpClient := mockHTTPClient(responses)
 	return &Client{
-		httpClient: &httpClient,
+		HTTPClient: &httpClient,
 	}
 }
 
