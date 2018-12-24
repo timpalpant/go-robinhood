@@ -1,48 +1,33 @@
 package robinhood
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 
 	"github.com/golang/glog"
 	"github.com/pkg/errors"
+	"golang.org/x/oauth2"
 )
 
 const (
 	Endpoint = "https://api.robinhood.com"
 )
 
+// HTTPClient is an interface for the methods we use of http.Client.
+// It enables using a mock HTTP client for tests.
+type HTTPClient interface {
+	Do(req *http.Request) (resp *http.Response, err error)
+}
+
 type Client struct {
-	*http.Client
+	httpClient HTTPClient
 }
 
-func NewClient(username, password string) *Client {
+func NewClient(tokenSource oauth2.TokenSource) *Client {
 	return &Client{
-		Client: &http.Client{},
+		httpClient: oauth2.NewClient(context.Background(), tokenSource),
 	}
-}
-
-func (c *Client) GetInstruments() ([]*Instrument, error) {
-	url := Endpoint + "/instruments/"
-	var result []*Instrument
-	for url != "" {
-		var resp struct {
-			Results []*Instrument
-			Next    string
-		}
-
-		if err := c.getJSON(url, &resp); err != nil {
-			return nil, err
-		}
-
-		result = append(result, resp.Results...)
-		url = resp.Next
-		if len(resp.Results) == 0 {
-			break
-		}
-	}
-
-	return result, nil
 }
 
 func (c *Client) getJSON(url string, result interface{}) error {
@@ -56,7 +41,7 @@ func (c *Client) getJSON(url string, result interface{}) error {
 
 func (c *Client) do(req *http.Request, result interface{}) error {
 	glog.V(2).Infof("%v: %v", req.Method, req.URL)
-	resp, err := c.Client.Do(req)
+	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return err
 	}
