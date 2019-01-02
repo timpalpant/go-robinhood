@@ -1,0 +1,40 @@
+{
+	"next": null,
+	"previous": null,
+	"results": [{
+	    "deactivated": false,
+	    "updated_at": "2015-09-25T18:43:10.879108Z",
+	    "margin_balances": null,
+	    "portfolio": "https://api.robinhood.com/accounts/8UD09348/portfolio/",
+	    "cash_balances": {
+			"cash_held_for_orders": "0.0000",
+			"created_at": "2016-03-12T01:08:27.672943Z",
+			"cash": "214.8900",
+			"buying_power": "114.8900",
+			"updated_at": "2016-03-18T09:03:59.954927Z",
+			"cash_available_for_withdrawal": "114.8900",
+			"uncleared_deposits": "0.0000",
+			"unsettled_funds": "100.0000"
+	    },
+	    "withdrawal_halted": false,
+	    "cash_available_for_withdrawal": "114.8900",
+	    "type": "cash",
+	    "sma": null,
+	    "sweep_enabled": false,
+	    "deposit_halted": false,
+	    "buying_power": "114.8900",
+	    "user": "https://api.robinhood.com/user/",
+	    "max_ach_early_access_amount": "0.00",
+	    "cash_held_for_orders": "0.0000",
+	    "only_position_closing_trades": false,
+	    "url": "https://api.robinhood.com/accounts/8UD09348/",
+	    "positions": "https://api.robinhood.com/accounts/8UD09348/positions/",
+	    "created_at": "2016-03-12T01:08:27.672943Z",
+	    "cash": "114.8900",
+	    "sma_held_for_orders": null,
+	    "account_number": "8UD09348",
+	    "uncleared_deposits": "0.0000",
+	    "unsettled_funds": "100.0000",
+	    "nummus_enabled": null
+	}]
+}
