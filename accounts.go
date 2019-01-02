@@ -1,6 +1,9 @@
 package robinhood
 
 import (
+	"fmt"
+	"net/url"
+	"strings"
 	"time"
 )
 
@@ -87,4 +90,26 @@ func (c *Client) ListAccounts() ([]*Account, error) {
 	}
 
 	return result, nil
+}
+
+func (c *Client) GetAccount(accountNumber string) (*Account, error) {
+	url := Endpoint + "/accounts/" + accountNumber
+	resp := &Account{}
+	err := c.getJSON(url, nil, resp)
+	return resp, err
+}
+
+// Helper function to extract the account ID from an account URL.
+func ParseAccountNumber(accountURL string) (string, error) {
+	urlParsed, err := url.Parse(accountURL)
+	if err != nil {
+		return "", err
+	}
+
+	parts := strings.Split(strings.Trim(urlParsed.Path, "/"), "/")
+	if len(parts) < 2 {
+		return "", fmt.Errorf("invalid account URL: %v", accountURL)
+	}
+
+	return parts[1], nil
 }

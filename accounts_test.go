@@ -100,3 +100,16 @@ func TestListAccounts_Margin(t *testing.T) {
 		t.Errorf("did not parse expected account: got %+v, wanted %+v", accts[0], expected)
 	}
 }
+
+func TestParseAccountNumber(t *testing.T) {
+	accountURL := "https://api.robinhood.com/accounts/8UD09348/"
+	id, err := ParseAccountNumber(accountURL)
+	if err != nil {
+		t.Error(err)
+	}
+
+	expected := "8UD09348"
+	if id != expected {
+		t.Errorf("got %v, expected %v", id, expected)
+	}
+}
