@@ -4,8 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"net/url"
+	"strings"
 
 	"github.com/golang/glog"
+	"github.com/google/go-querystring/query"
 	"github.com/pkg/errors"
 	"golang.org/x/oauth2"
 )
@@ -30,12 +33,35 @@ func NewClient(tokenSource oauth2.TokenSource) *Client {
 	}
 }
 
-func (c *Client) getJSON(url string, result interface{}) error {
+func (c *Client) getJSON(rawURL string, request interface{}, result interface{}) error {
+	url, err := buildFullURL(rawURL, request)
+	if err != nil {
+		return err
+	}
+
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return err
 	}
 
+	req.Header.Set("Accept", "application/json")
+	return c.do(req, result)
+}
+
+func (c *Client) postForm(url string, request interface{}, result interface{}) error {
+	values, err := query.Values(request)
+	if err != nil {
+		return err
+	}
+
+	reader := strings.NewReader(values.Encode())
+	req, err := http.NewRequest(http.MethodPost, url, reader)
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Accept", "application/json")
 	return c.do(req, result)
 }
 
@@ -58,4 +84,19 @@ func (c *Client) do(req *http.Request, result interface{}) error {
 	}
 
 	return dec.Decode(result)
+}
+
+func buildFullURL(baseURL string, request interface{}) (string, error) {
+	values, err := query.Values(request)
+	if err != nil {
+		return "", err
+	}
+
+	urlParsed, err := url.Parse(baseURL)
+	if err != nil {
+		return "", err
+	}
+
+	urlParsed.RawQuery = values.Encode()
+	return urlParsed.String(), nil
 }

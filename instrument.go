@@ -35,7 +35,7 @@ func (c *Client) ListAllInstruments() ([]*Instrument, error) {
 			Next    string
 		}
 
-		if err := c.getJSON(url, &resp); err != nil {
+		if err := c.getJSON(url, nil, &resp); err != nil {
 			return nil, err
 		}
 
