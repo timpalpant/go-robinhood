@@ -31,7 +31,7 @@ type OAuthResponse struct {
 }
 
 func (o *OAuth) Token() (*oauth2.Token, error) {
-	req, err := o.Request()
+	req, err := o.buildRequest()
 	if err != nil {
 		return nil, errors.Wrap(err, "could not create request")
 	}
@@ -57,10 +57,10 @@ func (o *OAuth) Token() (*oauth2.Token, error) {
 	return token, nil
 }
 
-func (o *OAuth) Request() (*http.Request, error) {
+func (o *OAuth) buildRequest() (*http.Request, error) {
 	ep := o.Endpoint
 	if ep == "" {
-		ep = Endpoint + "/oauth2/token"
+		ep = Endpoint + "/oauth2/token/"
 	}
 
 	clientID := o.ClientID
