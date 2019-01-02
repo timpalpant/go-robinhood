@@ -108,5 +108,5 @@ func ParseInstrumentID(instrumentURL string) (string, error) {
 }
 
 func GetInstrumentURL(instrumentID string) string {
-	return Endpoint + "/instruments/" + id + "/"
+	return Endpoint + "/instruments/" + instrumentID + "/"
 }
