@@ -35,7 +35,7 @@ func TestParseOrderResponse(t *testing.T) {
 		Order: &Order{
 			InstrumentURL: "https://api.robinhood.com/instruments/50810c35-d215-4866-9758-0ada4ac79ffa/",
 			Side:          Sell,
-			TimeInForce:   GoodTillCanceled,
+			TimeInForce:   GoodTilCanceled,
 			Trigger:       "immediate",
 			Type:          Market,
 			AccountURL:    "https://api.robinhood.com/accounts/8UD09348/",

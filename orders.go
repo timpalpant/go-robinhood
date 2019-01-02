@@ -28,7 +28,7 @@ type TimeInForce string
 
 const (
 	GoodForDay        TimeInForce = "gfd"
-	GoodTillCanceled  TimeInForce = "gtc"
+	GoodTilCanceled   TimeInForce = "gtc"
 	ImmediateOrCancel TimeInForce = "ioc"
 	OPG               TimeInForce = "opg"
 )
