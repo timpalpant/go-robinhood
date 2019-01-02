@@ -25,6 +25,15 @@ type getPositionsRequest struct {
 
 func (c *Client) ListPositions(nonzero bool) ([]*Position, error) {
 	url := Endpoint + "/positions/"
+	return c.doGetPositions(url, nonzero)
+}
+
+func (c *Client) ListPositionsForAccount(accountNumber string, nonzero bool) ([]*Position, error) {
+	url := Endpoint + "/accounts/" + accountNumber + "/positions/"
+	return c.doGetPositions(url, nonzero)
+}
+
+func (c *Client) doGetPositions(url string, nonzero bool) ([]*Position, error) {
 	req := &getPositionsRequest{
 		Nonzero: nonzero,
 	}
