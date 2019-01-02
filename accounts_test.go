@@ -113,3 +113,31 @@ func TestParseAccountNumber(t *testing.T) {
 		t.Errorf("got %v, expected %v", id, expected)
 	}
 }
+
+func TestGetPortfolio(t *testing.T) {
+	responses, err := loadResponses("testdata/responses/portfolio.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	client := NewTestClient(responses)
+	portfolio, err := client.GetPortfolio("8UD09348")
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+
+	expected := &Portfolio{
+		URL:                         "https://api.robinhood.com/portfolios/8UD09348/",
+		AdjustedEquityPreviousClose: 500.17,
+		AccountURL:                  "https://api.robinhood.com/accounts/8UD09348/",
+		LastCoreMarketValue:         34.07,
+		LastCoreEquity:              499.66,
+		Equity:                      499.66,
+		MarketValue:                 34.07,
+		EquityPreviousClose:         0.17,
+	}
+
+	if !reflect.DeepEqual(portfolio, expected) {
+		t.Errorf("did not parse expected portfolio: got %+v, wanted %+v", portfolio, expected)
+	}
+}

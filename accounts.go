@@ -71,6 +71,17 @@ type Account struct {
 	UnsettledFunds             float64 `json:"unsettled_funds,string"`
 }
 
+type Portfolio struct {
+	URL                         string
+	AdjustedEquityPreviousClose float64 `json:"adjusted_equity_previous_close,string"`
+	AccountURL                  string  `json:"account"`
+	LastCoreMarketValue         float64 `json:"last_core_market_value,string"`
+	LastCoreEquity              float64 `json:"last_core_equity,string"`
+	Equity                      float64 `json:",string"`
+	MarketValue                 float64 `json:"market_value,string"`
+	EquityPreviousClose         float64 `json:"equity_previous_close,string"`
+}
+
 func (c *Client) ListAccounts() ([]*Account, error) {
 	url := Endpoint + "/accounts/"
 	var result []*Account
@@ -93,7 +104,7 @@ func (c *Client) ListAccounts() ([]*Account, error) {
 }
 
 func (c *Client) GetAccount(accountNumber string) (*Account, error) {
-	url := Endpoint + "/accounts/" + accountNumber
+	url := Endpoint + "/accounts/" + accountNumber + "/"
 	resp := &Account{}
 	err := c.getJSON(url, nil, resp)
 	return resp, err
@@ -112,4 +123,11 @@ func ParseAccountNumber(accountURL string) (string, error) {
 	}
 
 	return parts[1], nil
+}
+
+func (c *Client) GetPortfolio(accountNumber string) (*Portfolio, error) {
+	url := Endpoint + "/portfolios/" + accountNumber + "/"
+	resp := &Portfolio{}
+	err := c.getJSON(url, nil, resp)
+	return resp, err
 }
