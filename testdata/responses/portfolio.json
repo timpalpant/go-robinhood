@@ -1,0 +1,14 @@
+{
+    "extended_hours_equity":null,
+    "url":"https://api.robinhood.com/portfolios/8UD09348/",
+    "adjusted_equity_previous_close":"500.1700",
+    "account":"https://api.robinhood.com/accounts/8UD09348/",
+    "last_core_market_value":"34.0700",
+    "last_core_equity":"499.6600",
+    "excess_margin":null,
+    "excess_margin_with_uncleared_deposits":null,
+    "equity":"499.6600",
+    "market_value":"34.0700",
+    "equity_previous_close":"0.1700",
+    "extended_hours_market_value":null
+}
