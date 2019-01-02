@@ -57,3 +57,16 @@ func TestListAllInstruments(t *testing.T) {
 		t.Errorf(diff)
 	}
 }
+
+func TestParseInstrumentID(t *testing.T) {
+	instrumentURL := "https://api.robinhood.com/instruments/50810c35-d215-4866-9758-0ada4ac79ffa/"
+	id, err := ParseInstrumentID(instrumentURL)
+	if err != nil {
+		t.Error(err)
+	}
+
+	expected := "50810c35-d215-4866-9758-0ada4ac79ffa"
+	if id != expected {
+		t.Errorf("got %v, expected %v", id, expected)
+	}
+}

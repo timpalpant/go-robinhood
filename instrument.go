@@ -1,5 +1,11 @@
 package robinhood
 
+import (
+	"fmt"
+	"net/url"
+	"strings"
+)
+
 type Instrument struct {
 	MarginInitialRatio float64 `json:"margin_initial_ratio,string"`
 	RHSTradability     string  `json:"rhs_tradability"`
@@ -47,4 +53,56 @@ func (c *Client) ListAllInstruments() ([]*Instrument, error) {
 	}
 
 	return result, nil
+}
+
+type getInstrumentsRequest struct {
+	Symbol string `url:",omitifempty"`
+}
+
+// Get info for a particular symbol.
+func (c *Client) ListInstrumentsForSymbol(symbol string) ([]*Instrument, error) {
+	url := Endpoint + "/instruments/"
+	req := &getInstrumentsRequest{symbol}
+	var result []*Instrument
+	for url != "" {
+		var resp struct {
+			Results []*Instrument
+			Next    string
+		}
+
+		if err := c.getJSON(url, req, &resp); err != nil {
+			return nil, err
+		}
+
+		result = append(result, resp.Results...)
+		url = resp.Next
+		if len(resp.Results) == 0 {
+			break
+		}
+	}
+
+	return result, nil
+}
+
+// Get info for a particular instrument ID.
+func (c *Client) GetInstrument(id string) (*Instrument, error) {
+	url := Endpoint + "/instruments/" + id
+	resp := &Instrument{}
+	err := c.getJSON(url, nil, resp)
+	return resp, err
+}
+
+// Helper function to extract the instrument ID from an instrument URL.
+func ParseInstrumentID(instrumentURL string) (string, error) {
+	urlParsed, err := url.Parse(instrumentURL)
+	if err != nil {
+		return "", err
+	}
+
+	parts := strings.Split(strings.Trim(urlParsed.Path, "/"), "/")
+	if len(parts) < 2 {
+		return "", fmt.Errorf("invalid instrument URL: %v", instrumentURL)
+	}
+
+	return parts[1], nil
 }
