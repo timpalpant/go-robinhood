@@ -86,7 +86,7 @@ func (c *Client) ListInstrumentsForSymbol(symbol string) ([]*Instrument, error) 
 
 // Get info for a particular instrument ID.
 func (c *Client) GetInstrument(id string) (*Instrument, error) {
-	url := Endpoint + "/instruments/" + id
+	url := GetInstrumentURL(id)
 	resp := &Instrument{}
 	err := c.getJSON(url, nil, resp)
 	return resp, err
@@ -105,4 +105,8 @@ func ParseInstrumentID(instrumentURL string) (string, error) {
 	}
 
 	return parts[1], nil
+}
+
+func GetInstrumentURL(instrumentID string) string {
+	return Endpoint + "/instruments/" + id + "/"
 }

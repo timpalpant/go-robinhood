@@ -104,7 +104,7 @@ func (c *Client) ListAccounts() ([]*Account, error) {
 }
 
 func (c *Client) GetAccount(accountNumber string) (*Account, error) {
-	url := Endpoint + "/accounts/" + accountNumber + "/"
+	url := GetAccountURL(accountNumber)
 	resp := &Account{}
 	err := c.getJSON(url, nil, resp)
 	return resp, err
@@ -123,6 +123,10 @@ func ParseAccountNumber(accountURL string) (string, error) {
 	}
 
 	return parts[1], nil
+}
+
+func GetAccountURL(accountNumber string) string {
+	return Endpoint + "/accounts/" + accountNumber + "/"
 }
 
 func (c *Client) GetPortfolio(accountNumber string) (*Portfolio, error) {
