@@ -103,13 +103,13 @@ func (c *Client) GetOrder(orderId string) (*OrderTicket, error) {
 
 func (c *Client) ListOrders(req *ListOrdersRequest) ([]*OrderTicket, error) {
 	url := Endpoint + "/orders/"
-	var resp struct {
-		Results []*OrderTicket
-		Next    string
-	}
-
 	var result []*OrderTicket
 	for {
+		var resp struct {
+			Results []*OrderTicket
+			Next    string
+		}
+
 		err := c.getJSON(url, req, &resp)
 		if err != nil {
 			return nil, err
