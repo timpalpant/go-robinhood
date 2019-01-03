@@ -137,7 +137,7 @@ func (c *Client) ListOrders(req *ListOrdersRequest) ([]*OrderTicket, error) {
 }
 
 func (c *Client) CancelOrder(orderId string) (*OrderTicket, error) {
-	url := Endpoint + "/orders/" + orderId + "/cancel"
+	url := Endpoint + "/orders/" + orderId + "/cancel/"
 	resp := &OrderTicket{}
 	err := c.postForm(url, nil, resp)
 	return resp, err
