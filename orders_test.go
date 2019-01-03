@@ -23,7 +23,7 @@ func TestParseOrderResponse(t *testing.T) {
 	}
 
 	expected := &OrderTicket{
-		Executions:         []string{},
+		Executions:         []OrderExecution{},
 		UpdatedAt:          time.Date(2016, 4, 1, 21, 24, 13, 698563000, time.UTC),
 		Fees:               0.0,
 		CancelURL:          "https://api.robinhood.com/orders/15390ade-face-caca-0987-9fdac5824701/cancel/",
