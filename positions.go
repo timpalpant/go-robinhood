@@ -20,7 +20,7 @@ type Position struct {
 }
 
 type getPositionsRequest struct {
-	Nonzero bool `url:"nonzero,omitifempty"`
+	Nonzero bool `url:"nonzero,omitempty"`
 }
 
 func (c *Client) ListPositions(nonzero bool) ([]*Position, error) {

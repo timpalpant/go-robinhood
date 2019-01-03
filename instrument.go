@@ -56,7 +56,7 @@ func (c *Client) ListAllInstruments() ([]*Instrument, error) {
 }
 
 type getInstrumentsRequest struct {
-	Symbol string `url:",omitifempty"`
+	Symbol string `url:",omitempty"`
 }
 
 // Get info for a particular symbol.

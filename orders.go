@@ -48,20 +48,20 @@ const (
 )
 
 type Order struct {
-	AccountURL             string `json:"account",url:"account,omitifempty"`
-	InstrumentURL          string `json:"instrument",url:"instrument,omitifempty"`
+	AccountURL             string `json:"account",url:"account,omitempty"`
+	InstrumentURL          string `json:"instrument",url:"instrument,omitempty"`
 	Symbol                 string
 	Type                   OrderType
-	TimeInForce            TimeInForce `json:"time_in_force",url:"time_in_force,omitifempty"`
+	TimeInForce            TimeInForce `json:"time_in_force",url:"time_in_force,omitempty"`
 	Trigger                Trigger
 	Price                  *float64
-	StopPrice              *float64 `json:"stop_price",url:"stop_price,omitifempty"`
-	Quantity               float64  `json:"quantity,string",url:"quantity,omitifempty"`
+	StopPrice              *float64 `json:"stop_price",url:"stop_price,omitempty"`
+	Quantity               float64  `json:"quantity,string",url:"quantity,omitempty"`
 	Side                   OrderSide
-	ClientID               *string `json:"client_id",url:"client_id,omitifempty"`
-	ExtendedHours          bool    `json:"extended_hours",url:"extended_hours,omitifempty"`
-	OverrideDayTradeChecks bool    `json:"override_day_trade_checks",url:"override_day_trade_checks,omitifempty"`
-	OverrideDTBPChecks     bool    `json:"override_dtbp_checks",url:"override_dtbp_checks,omitifempty"`
+	ClientID               *string `json:"client_id",url:"client_id,omitempty"`
+	ExtendedHours          bool    `json:"extended_hours",url:"extended_hours,omitempty"`
+	OverrideDayTradeChecks bool    `json:"override_day_trade_checks",url:"override_day_trade_checks,omitempty"`
+	OverrideDTBPChecks     bool    `json:"override_dtbp_checks",url:"override_dtbp_checks,omitempty"`
 }
 
 type OrderTicket struct {
@@ -82,9 +82,9 @@ type OrderTicket struct {
 }
 
 type ListOrdersRequest struct {
-	Since         time.Time `url:"since,omitifempty"`
-	InstrumentURL string    `url:"instrument,omitifempty"`
-	Cursor        string    `url:"cursor,omitifempty"`
+	Since         time.Time `url:"since,omitempty"`
+	InstrumentURL string    `url:"instrument,omitempty"`
+	Cursor        string    `url:"cursor,omitempty"`
 }
 
 func (c *Client) PlaceOrder(o *Order) (*OrderTicket, error) {
