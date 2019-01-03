@@ -64,11 +64,14 @@ type Order struct {
 	OverrideDTBPChecks     bool        `json:"override_dtbp_checks" url:"override_dtbp_checks,omitempty"`
 }
 
+type OrderExecution struct {
+}
+
 type OrderTicket struct {
 	*Order
 	ID                 string
 	UpdatedAt          time.Time `json:"updated_at"`
-	Executions         []string
+	Executions         []OrderExecution
 	Fees               float64 `json:"fees,string"`
 	CancelURL          string  `json:"cancel"`
 	CumulativeQuantity float64 `json:"cumulative_quantity,string"`
