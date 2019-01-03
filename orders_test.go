@@ -1,6 +1,8 @@
 package robinhood
 
 import (
+	"io/ioutil"
+	"net/url"
 	"reflect"
 	"testing"
 	"time"
@@ -45,5 +47,56 @@ func TestParseOrderResponse(t *testing.T) {
 
 	if !reflect.DeepEqual(ticket, expected) {
 		t.Errorf("did not parse expected order ticket: got %+v, wanted %+v", ticket, expected)
+	}
+}
+
+func TestPlaceOrder(t *testing.T) {
+	responses, err := loadResponses("testdata/responses/place_order.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	httpClient := &mockHTTPClient{responses: responses}
+	client := &Client{HTTPClient: httpClient}
+	order := &Order{
+		InstrumentURL: "https://api.robinhood.com/instruments/50810c35-d215-4866-9758-0ada4ac79ffa/",
+		Symbol:        "SPY",
+		Side:          Sell,
+		TimeInForce:   GoodTilCanceled,
+		Trigger:       "immediate",
+		Type:          Market,
+		AccountURL:    "https://api.robinhood.com/accounts/8UD09348/",
+		Quantity:      1.0,
+	}
+
+	if _, err := client.PlaceOrder(order); err != nil {
+		t.Error(err)
+	}
+
+	req := httpClient.requests[0]
+	bodyReader, err := req.GetBody()
+	if err != nil {
+		t.Error(err)
+	}
+
+	body, err := ioutil.ReadAll(bodyReader)
+	if err != nil {
+		t.Error(err)
+	}
+
+	values := url.Values{
+		"account":       {"https://api.robinhood.com/accounts/8UD09348/"},
+		"side":          {"sell"},
+		"instrument":    {"https://api.robinhood.com/instruments/50810c35-d215-4866-9758-0ada4ac79ffa/"},
+		"symbol":        {"SPY"},
+		"time_in_force": {"gtc"},
+		"trigger":       {"immediate"},
+		"type":          {"market"},
+		"quantity":      {"1"},
+	}
+
+	expected := values.Encode()
+	if string(body) != expected {
+		t.Errorf("request not as expected: got %v, expected %v", string(body), expected)
 	}
 }

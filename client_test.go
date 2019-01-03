@@ -10,23 +10,26 @@ import (
 )
 
 func NewTestClient(responses []*http.Response) *Client {
-	httpClient := mockHTTPClient(responses)
+	httpClient := &mockHTTPClient{responses: responses}
 	return &Client{
-		HTTPClient: &httpClient,
+		HTTPClient: httpClient,
 	}
 }
 
-type mockHTTPClient []*http.Response
+type mockHTTPClient struct {
+	requests  []*http.Request
+	responses []*http.Response
+}
 
 func (c *mockHTTPClient) Do(req *http.Request) (*http.Response, error) {
-	old := *c
-	if len(old) == 0 {
+	if len(c.responses) == 0 {
 		return nil, fmt.Errorf("no more responses")
 	}
 
-	first := old[0]
-	*c = old[1:]
-	return first, nil
+	c.requests = append(c.requests, req)
+	resp := c.responses[0]
+	c.responses = c.responses[1:]
+	return resp, nil
 }
 
 func loadResponses(filenames ...string) ([]*http.Response, error) {
