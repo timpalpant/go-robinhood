@@ -87,7 +87,6 @@ type OrderTicket struct {
 type ListOrdersRequest struct {
 	Since         time.Time `url:"since,omitempty"`
 	InstrumentURL string    `url:"instrument,omitempty"`
-	Cursor        string    `url:"cursor,omitempty"`
 }
 
 func (c *Client) PlaceOrder(o *Order) (*OrderTicket, error) {
@@ -107,7 +106,7 @@ func (c *Client) GetOrder(orderId string) (*OrderTicket, error) {
 func (c *Client) ListOrders(req *ListOrdersRequest) ([]*OrderTicket, error) {
 	url := Endpoint + "/orders/"
 	var result []*OrderTicket
-	for {
+	for url != "" {
 		var resp struct {
 			Results []*OrderTicket
 			Next    string
@@ -119,12 +118,7 @@ func (c *Client) ListOrders(req *ListOrdersRequest) ([]*OrderTicket, error) {
 		}
 
 		result = append(result, resp.Results...)
-
-		if resp.Next == "" {
-			break
-		}
-
-		req.Cursor = resp.Next
+		url = resp.Next
 	}
 
 	return result, nil
