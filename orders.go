@@ -65,6 +65,11 @@ type Order struct {
 }
 
 type OrderExecution struct {
+	Timestamp      time.Time
+	Price          float64 `json:",string"`
+	SettlementDate string
+	ID             string
+	Quantity       float64 `json:",string"`
 }
 
 type OrderTicket struct {
@@ -118,7 +123,14 @@ func (c *Client) ListOrders(req *ListOrdersRequest) ([]*OrderTicket, error) {
 		}
 
 		result = append(result, resp.Results...)
+
+		// The API seems to return the current URL?
+		if resp.Next == url {
+			break
+		}
+
 		url = resp.Next
+		req = nil // Request parameters included in next URL.
 	}
 
 	return result, nil

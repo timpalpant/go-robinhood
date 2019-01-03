@@ -7,13 +7,13 @@ import (
 
 type APIError struct {
 	StatusCode int
-	Errors     map[string][]string
+	Errors     map[string]interface{}
 }
 
 func (e APIError) Error() string {
 	var errors []string
-	for k, vs := range e.Errors {
-		err := fmt.Sprintf("%v: %v", k, vs)
+	for k, v := range e.Errors {
+		err := fmt.Sprintf("%v: %v", k, v)
 		errors = append(errors, err)
 	}
 

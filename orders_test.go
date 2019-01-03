@@ -3,6 +3,7 @@ package robinhood
 import (
 	"io/ioutil"
 	"net/url"
+	"os"
 	"reflect"
 	"testing"
 	"time"
@@ -99,4 +100,25 @@ func TestPlaceOrder(t *testing.T) {
 	if string(body) != expected {
 		t.Errorf("request not as expected: got %v, expected %v", string(body), expected)
 	}
+}
+
+func TestListOrders(t *testing.T) {
+	username := os.Getenv("ROBINHOOD_USERNAME")
+	password := os.Getenv("ROBINHOOD_PASSWORD")
+	if username == "" || password == "" {
+		t.Skip("skipping test because ROBINHOOD_USERNAME or ROBINHOOD_PASSWORD not set")
+		return
+	}
+
+	client := NewClient(&OAuth{
+		Username: username,
+		Password: password,
+	})
+
+	orders, err := client.ListOrders(&ListOrdersRequest{})
+	if err != nil {
+		t.Error(err)
+	}
+
+	t.Logf("fetched %d orders", len(orders))
 }
