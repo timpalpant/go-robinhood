@@ -54,8 +54,8 @@ type Order struct {
 	Type                   OrderType   `url:"type,omitempty"`
 	TimeInForce            TimeInForce `json:"time_in_force" url:"time_in_force,omitempty"`
 	Trigger                Trigger     `url:"trigger,omitempty"`
-	Price                  *float64    `url:"price,omitempty"`
-	StopPrice              *float64    `json:"stop_price" url:"stop_price,omitempty"`
+	Price                  *float64    `json:",string" url:"price,omitempty"`
+	StopPrice              *float64    `json:"stop_price,string" url:"stop_price,omitempty"`
 	Quantity               float64     `json:"quantity,string" url:"quantity,omitempty"`
 	Side                   OrderSide   `url:"side,omitempty"`
 	ClientID               *string     `json:"client_id" url:"client_id,omitempty"`
